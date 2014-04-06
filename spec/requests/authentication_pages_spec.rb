@@ -8,6 +8,12 @@ describe "Authentication" do
 
     it { should have_selector('h1', text: 'Sign in') }
     it { should have_selector('title', text: 'Sign in') }
+
+    it { should_not have_link('Users') }
+    it { should_not have_link('Profile') }
+    it { should_not have_link('Settings') }
+    it { should_not have_link('Sign out') }
+
     
     describe "with invalid information" do
       before { click_button "Sign in" }
@@ -34,6 +40,28 @@ describe "Authentication" do
       it { should have_link('Sign out', href: signout_path) }
 
       it { should_not  have_link('Sign in', href: signin_path) }
+      
+      describe "followed by signup" do
+        before do
+          click_link "Home"
+          click_link "Sign up now!"
+        end
+        
+        it { should_not have_selector('title', text: 'Sign up') }
+        it { should have_selector('h1', text: 'Welcome to Sample App') }
+
+
+#        before { click_link "Home" }
+#        
+#        it { should have_selector('h1', text: 'Welcome to Sample App') }
+
+#        describe "after signup" do
+#          before { click_link "Sign up now!" }
+#          
+#          it { should_not have_selector('title', text: 'Sign up') }
+#          it { should have_selector('h1', text: 'Welcome to Sample App') }
+#        end
+      end
       
       describe "followed by signout" do
         before { click_link "Sign out" }
